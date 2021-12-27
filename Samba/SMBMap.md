@@ -1,5 +1,5 @@
-# SMBMap
-[SMBMap](https://github.com/ShawnDEvans/smbmap) permite enumerar las unidades compartidas de **SAMBA** en todo un dominio.
+# [SMBMap](https://github.com/ShawnDEvans/smbmap) 
+Esta herramienta nos permite enumerar las unidades compartidas de **SAMBA** en todo un dominio.
 - Unidades compartidas.
 - Permisos de las unidades.
 - Contenidos compartidos.
