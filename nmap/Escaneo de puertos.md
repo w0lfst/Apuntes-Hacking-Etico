@@ -1,5 +1,5 @@
 # Escanear puertos.
-`nmap -p- --open -T5 -v -n "IP-attack" -oG "nombre-archivo" (allPorts)`
+```nmap -p- --open -T5 -v -n "IP-attack" -oG "nombre-archivo" (allPorts)```
 - `-p-` > Indicamos todos los puertos.
 - `--open` > Filtrar por puertos abiertos.
 - `-T5` > Velocidad de escaneo (maxima).
@@ -8,7 +8,7 @@
 - `-oG` > Exportar formato grepeable para despues utilizar ExtractPorts.
 
 ### Escaneo mas rapido.
-`nmap -p- -sS --min-rate 5000 --open -vvv -n -Pn "IP-attack" -oG "nombre-archivo" (allPorts)` 
+```nmap -p- -sS --min-rate 5000 --open -vvv -n -Pn "IP-attack" -oG "nombre-archivo" (allPorts)```
 - `-p-` > Indicamos todos los puertos.
 - `--sS` > TCP sync port scan.
 - `--min-rate` > No emitir paquetes mas lentos de "paquetes por segundo" (5000).
@@ -20,7 +20,7 @@
 
 ### Escanear version y servicio que corren los puertos.
 
-`nmap -sC -sV -p "ports" "IP-attack" -oN "nombre-archivo" (targeted)`
+```nmap -sC -sV -p "ports" "IP-attack" -oN "nombre-archivo" (targeted)```
 	
 - `-sC` > Seleccion de script pedeterminado de nmap para escaneo. 
 - `-sV` > Sondear puertos abiertos, para obtener información de servicio/versión.
