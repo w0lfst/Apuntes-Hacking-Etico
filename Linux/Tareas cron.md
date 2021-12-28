@@ -1,4 +1,3 @@
-# ⚠️ REVISIÓN
 # Tareas cron
 
 Una tarea cron es una tarea que se ejecuta a intervalos regulares de tiempo. Se ejecuta a nivel de sistema.
@@ -28,14 +27,9 @@ nano /home/w0lfst/file.sh
 #!/bin/bash
 
 sleep 10
-date=`date`
-echo "Tarea ejecutada" $date > registro
+rm -r /tmp/
 ```
 4. Iniciamos el servicio cron:
 ```bash
 service cron start
 ``` 
-5. Comprobamos su funcionamiento.
-```bash
-
-```
