@@ -37,3 +37,39 @@ john --wordlist=/usr/share/wordlists/rockyou.txt hashes
 
 # Envenenamiento IPV4
 
+Modificamos el `Responder.conf`
+
+```bash
+nano /usr/share/responder/Responder.conf 
+```
+
+Ponemos en false SMB y HTTP
+```bash
+[Responder Core]
+
+; Servers to start
+SQL = On
+SMB = Off <---
+RDP = On
+Kerberos = On
+FTP = On
+POP = On
+SMTP = On
+IMAP = On
+HTTP = Off <---
+HTTPS = On
+DNS = On
+LDAP = On
+DCERPC = On
+WINRM = On
+```
+
+En nuestro directorio de trabajo, creamos un archivo `targets.txt` e indicamos la direccion ip del equipo que queramos atacar. 
+Para encontrar la ip utilizaremos crackmapexec:
+```bash
+crackmapexec smb 10.0.0.0/24
+```
+- `smb` Indicamos que queremos utilizar el protocolo samba
+- `10.0.0.0` Direccion de red que queremos escanear
+- `/24` Numero CIDR (mascara de subred), deberia ser 8 pero solo me ha funcionado con /24. 
+
