@@ -108,7 +108,8 @@ Asignaremos un capabilite para realizar la prueba:
 ```bash
 setcap cap_setuid+ep /usr/bin/python3.9
 ```
-En este caso estamos asignando una capabilitie de tipo setuid, podemos buscar distintos tipos en internet.
+En este caso estamos asignando una capabilitie de tipo setuid, podemos ver mas tipos [aqui](https://wiki.gentoo.org/wiki/Hardened/Overview_of_POSIX_capabilities).
+
 Para obtener las capabilities que tenemos asignadas actualmente:
 ```bash
 cd /
