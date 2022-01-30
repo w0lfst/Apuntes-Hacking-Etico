@@ -2,7 +2,7 @@
 ***
 ## 📋 Indice 
 - 📜 [Linux:](https://github.com/w0lfst/Apuntes/tree/main/Linux)
-    - 🗃️ [Filtrar contenido archivo.](https://github.com/w0lfst/Apuntes-Hacking-Etico/blob/main/Linux/Filtrar%20contenido%20archivo.md)
+    - 🗃️ [Filtrar contenido archivo.](https://github.com/w0lfst/Apuntes-Hacking-Etico/blob/main/Linux/Filtrar%20contenido%20archivo.md#filtrar-contenido-arhivo)
     - 🔐 [Permisos y explotación.](https://github.com/w0lfst/Apuntes-Hacking-Etico/blob/main/Linux/Permisos.md#lectura-de-permisos)
         - [Lectura.](https://github.com/w0lfst/Apuntes-Hacking-Etico/blob/main/Linux/Permisos.md#lectura-de-permisos)  
         - [Avanzados.](https://github.com/w0lfst/Apuntes-Hacking-Etico/blob/main/Linux/Permisos.md#permisos-avanzados)
