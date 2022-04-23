@@ -1,6 +1,4 @@
-# ⚠️ EN PROCESO
-
-## Tratamiento de la tty 
+# Tratamiento de la tty 
 
 ```bash
 script /dev/null -c bash
