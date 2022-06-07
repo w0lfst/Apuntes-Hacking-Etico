@@ -2,13 +2,13 @@
 
 Filtramos contenido de un archivo (passwd) con grep:
 
-* Filtrar por todo aquello que acabe en ... (sh) (añadimos el dolar a la palabra que estamos buscando):
+* Filtrar por todo aquello que acabe en ... (sh) (añadimos el dólar a la palabra que estamos buscando):
 
 ```bash
 grep "sh$"
 ```
 
-* Extraer usuarios del passwd \`
+* Ahora vamos a extraer todos los usuarios del `/etc/passwd`:
 
 ```bash
 cat /etc/passwd | grep "sh$ | awk '{print $1}' FS = ":"
@@ -19,9 +19,7 @@ cat /etc/passwd | grep "sh$ | awk '{print $1}' FS = ":"
 
 (Buscar en un fichero que empiece y termine por pepito, `grep "^pepito$" -n (ver linea)`)
 
-***
-
-Tambien se puede realizar con **cut**
+También se puede realizar con **`cut`**
 
 ```bash
 cut -d':' -f 1
