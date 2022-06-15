@@ -1,5 +1,7 @@
 # Table of contents
 
+* [🏠 Ir a página principal](https://w0lfst.es)
+
 ## 💻 Apuntes - Hacking Ético <a href="#inicio" id="inicio"></a>
 
 * [📚 Indice](README.md)
