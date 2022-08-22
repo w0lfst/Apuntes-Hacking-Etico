@@ -22,7 +22,7 @@ description: >-
 * 5 = 1+4
 * 5 = 1+4
 
-La posición se cuenta desde la derecha, cada letra seria tendría los siguientes números:
+La posición se cuenta desde la derecha, cada letra tendría los siguientes números:
 
 * x = 1
 * w = 2
@@ -110,7 +110,7 @@ Así conseguimos acceso root gracias a que el comando find tenia asignado un per
 Para buscar permisos suid en la maquina victima utilizaremos la herramienta find de la siguiente manera:&#x20;
 
 ```bash
-find \-perm -4000  2>/dev/null 
+find / -type f -perm -4000 2>/dev/null 
 ```
 
 {% hint style="info" %}
@@ -120,7 +120,7 @@ find \-perm -4000  2>/dev/null
 Buscar archivos con permisos de escritura:
 
 ```bash
-find \-writable 2>/dev/null 
+find / -writable 2>/dev/null 
 ```
 
 ## Ejemplos ataque:
